@@ -12,7 +12,7 @@ if (!ObjectID.isValid(id)) {
             return console.log('A user with that ID doesn\'t exist.');
         };
         console.log(JSON.stringify(user, undefined, 2));
-    }, (err) => { console.log(err); });
+    }, (err) => { console.log(err) });
 };
 
 

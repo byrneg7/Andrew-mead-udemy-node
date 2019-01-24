@@ -4,6 +4,7 @@ var bodyParser = require('body-parser');
 var { mongoose } = require('./db/mongoose');
 var { Todo } = require('./models/todo');
 var { User } = require('./models/user');
+const { ObjectID } = require('mongodb');
 
 var app = express();
 
@@ -32,6 +33,27 @@ app.get('/todos', (req, res) => {
 app.listen(3000, () => {
     console.log('App started on port 3000');
 });
+
+//get /totos/123456
+//fetch the url id - make it dynamic
+
+app.get('/todos/:id', (req, res) => {
+
+    var id = req.params.id;
+
+    if (!ObjectID.isValid(id)) {
+        return res.status(404).send('Invalid ID')
+    }
+    Todo.findById(id).then((todo) => {
+        if (!todo) {
+            return res.status(400).send('Can\'t find user with ID entered.');
+        }
+        res.status(200).send({todo})
+    }, (err) => { console.log(err) }).catch((err) => {
+        res.status(400).send();
+    });
+});
+
 
 module.exports = { app };
 
