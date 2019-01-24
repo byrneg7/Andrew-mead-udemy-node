@@ -15,10 +15,9 @@ app.post('/todos', (req, res) => {
     });
     todo.save().then((doc) => {
         res.send(doc);
-        console.log('New Post made', JSON.stringify(todo, undefined, 2));
     }, (err) => {
         res.status(400).send(err);
-    })
+    });
 });
 
 app.get('/todos', (req, res) => {
