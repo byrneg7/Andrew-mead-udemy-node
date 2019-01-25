@@ -7,6 +7,7 @@ var { User } = require('./models/user');
 const { ObjectID } = require('mongodb');
 
 var app = express();
+const port = process.env.PORT || 3000;
 
 app.use(bodyParser.json()) // middleware for parsing json posts
 
@@ -30,8 +31,8 @@ app.get('/todos', (req, res) => {
 });
 
 
-app.listen(3000, () => {
-    console.log('App started on port 3000');
+app.listen(port, () => {
+    console.log(`App started on port ${port}`);
 });
 
 //get /totos/123456
