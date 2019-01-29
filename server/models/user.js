@@ -43,11 +43,29 @@ UserSchema.methods.generateAuthToken = function () {
     var user = this; //gives access to the individual document
 
     var access = 'auth';
-    var token = jwt.sign({ _id: user._id.toHexString(), access }, 'abc123').toString() //signs an object made from the {current user, 'auth'} 
-    user.tokens.push({ access, token });
+    var token = jwt.sign({ _id: user._id.toHexString(), access }, 'abc123').toString() //signs object made from {current user, 'auth'} 
+    user.tokens.push({ access, token }); //puts the token into the document
 
     return user.save().then(() => {
-        return token;
+        return token; //make it return a promise
+    });
+};
+
+//instance methods get called with the current document 
+//model methods get called with the model as the this binding
+UserSchema.statics.findByToken = function (token) {
+    var User = this;
+    var decoded;
+
+    try {
+        decoded = jwt.verify(token, 'abc123')
+    } catch (err) {
+        return Promise.reject();
+    }
+    return User.findOne({
+        '_id': decoded,
+        'tokens.token': token,   //quotes are required when we have a dot in the value
+        'tokens.access': 'auth'
     });
 };
 
