@@ -114,8 +114,6 @@ app.post('/users', (req, res) => {
     })
 });
 
-//test@exampleentered.com
-//testpassentered
 
 
 app.post('/users/login', (req, res) => {
