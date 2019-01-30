@@ -229,8 +229,8 @@ describe('POST /users', () => {
                     expect(user).toExist();
                     expect(user.password).toNotBe(password);
                     done();
-                })
-            })
+                });
+            });
     })
 
     it('should return validation errors if request invalid', (done) => {
