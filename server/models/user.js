@@ -53,6 +53,17 @@ UserSchema.methods.generateAuthToken = function () {
     });
 };
 
+UserSchema.methods.removeToken = function (token) {
+    var user = this;
+
+    return user.update({
+        $pull: {
+            tokens:
+                { token }
+        }
+    });
+};
+
 //instance methods get called with the current document 
 //model methods get called with the model as the this binding
 UserSchema.statics.findByToken = function (token) {
@@ -88,6 +99,8 @@ UserSchema.statics.findByCredentials = function (email, password) {
         });
     });
 };
+
+
 
 UserSchema.pre('save', function (next) {
     var user = this;
