@@ -184,6 +184,7 @@ describe('Patch /todos/id:', () => {
 
 describe('GET /users/me', () => {
     it('should return user if authenticated', (done) => {
+
         request(app)
             .get('/users/me')
             .set('x-auth', users[0].tokens[0].token)
@@ -288,7 +289,7 @@ describe('POST /users/login', () => {
             .post('/users/login')
             .send({
                 email: users[1].email,
-                password: users[1].password+'1'
+                password: users[1].password + '1'
             })
             .expect(400)
             .expect((res) => {
@@ -307,3 +308,20 @@ describe('POST /users/login', () => {
 
 });
 
+describe('DELETE /users/me/token', () => {
+    it('should remove auth token on logout', (done) => {
+        request(app)
+            .delete('/users/me/token')
+            .set('x-auth', users[0].tokens[0].token)
+            .expect(200)
+            .end((err, res) => {
+                if (err) {
+                    return done(err)
+                }
+                User.findById(users[0]._id).then((user) => {
+                    expect(user.tokens.length).toBe(0)
+                    done();
+                }).catch((err) => done(err))
+            });
+    });
+});
