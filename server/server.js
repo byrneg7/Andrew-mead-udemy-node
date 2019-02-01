@@ -78,7 +78,7 @@ app.get('/todos/:id', authenticate, (req, res) => {
         _creator: req.user._id
     }).then((todo) => {
         if (!todo) {
-            return res.status(404).send('Can\'t find user with ID entered.');
+            return res.status(404).send('Can\'t find todo with todoId provided.');
         }
         res.status(200).send({ todo })
     }).catch((err) => {
